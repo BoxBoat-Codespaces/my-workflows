@@ -1,7 +1,6 @@
 name: 'Terraform'
 
 on:
-  workflow_dispatch:
   workflow_call:
     inputs:
       tag:
@@ -40,7 +39,6 @@ jobs:
         terraform plan -input=false
     
   apply:
-    needs: [docker, plan]
     environment: dev
     if: github.ref == 'refs/heads/main'
     name: 'Terraform Apply'

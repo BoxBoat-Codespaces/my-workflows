@@ -8,6 +8,9 @@ on:
       environment: 
         required: true
         type: string
+      url:
+        required: true
+        type: string
 
 jobs:
   test:
@@ -20,6 +23,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      
+    - name: Set Azure URL
+      run: |
+        bash smoketest.sh -u ${{ inputs.url }}
 
     - uses: matt-ball/newman-action@master
       name: 'Newman Collection Runner'

@@ -68,5 +68,7 @@ jobs:
       run: |
         terraform init
         terraform apply -input=false -auto-approve
-        echo "URL=$(terraform output -raw fqdn)" >> $GITHUB_OUTPUT
+        URL=$(terraform output -raw fqdn)
+        echo $URL
+        echo "URL=${URL}" >> $GITHUB_OUTPUT
     

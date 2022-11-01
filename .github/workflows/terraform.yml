@@ -39,6 +39,7 @@ jobs:
         terraform plan -input=false
     
   apply:
+    needs: plan
     environment: dev
     if: github.ref == 'refs/heads/main'
     name: 'Terraform Apply'

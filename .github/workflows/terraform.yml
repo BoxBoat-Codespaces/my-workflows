@@ -49,6 +49,9 @@ jobs:
       run:
         shell: bash
         working-directory: terraform
+    
+    outputs:
+      url: ${{ steps.apply.outputs.URL }}
 
     steps:
     - name: Checkout
@@ -61,7 +64,9 @@ jobs:
         sed -i "s/IMAGE_TAG/${{ inputs.tag }}/" container_app.tf
 
     - name: Terraform Apply
+      id: apply
       run: |
         terraform init
         terraform apply -input=false -auto-approve
+        echo "URL=$(terraform output -raw fqdn)" >> $GITHUB_OUTPUT
     

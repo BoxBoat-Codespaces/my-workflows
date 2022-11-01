@@ -1,0 +1,67 @@
+name: 'Terraform'
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+jobs:
+  plan:
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: terraform
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Secret replacement
+      run: |
+        sed -i "s/REGUSER/${{ github.actor }}/" container_app.tf
+        sed -i "s/REGPASS/${{ secrets.MY_PAT }}/" container_app.tf
+        sed -i "s/IMAGE_TAG/${{ inputs.tag }}/" container_app.tf
+
+    - name: Terraform Plan
+      run: |
+        terraform init
+        terraform plan -input=false
+    
+  apply:
+    needs: [docker, plan]
+    environment: dev
+    if: github.ref == 'refs/heads/main'
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: terraform
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Secret replacement
+      run: |
+        sed -i "s/REGUSER/${{ github.actor }}/" container_app.tf
+        sed -i "s/REGPASS/${{ secrets.MY_PAT }}/" container_app.tf
+        sed -i "s/IMAGE_TAG/${{ inputs.tag }}/" container_app.tf
+
+    - name: Terraform Apply
+      run: |
+        terraform init
+        terraform apply -input=false -auto-approve
+    

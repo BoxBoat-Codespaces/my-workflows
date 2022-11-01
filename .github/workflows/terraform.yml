@@ -6,6 +6,9 @@ on:
       tag:
         required: true
         type: string
+    outputs:
+      url: 
+        value: ${{ jobs.apply.outputs.URL }}
 
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}

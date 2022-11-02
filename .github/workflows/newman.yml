@@ -28,11 +28,7 @@ jobs:
       run: |
         bash smoketest.sh -u ${{ inputs.url }}
 
-    - uses: matt-ball/newman-action@master
-      name: 'Newman Collection Runner'
-      with:
-        collection: ${{ inputs.collection }}
-        environment: ${{ inputs.environment }}
-        reporters: '["cli"]'
-        delayRequest: 0
-        iterationCount: 2
+    - name: Run Smoke Test
+      run: |
+        bash smoketest.sh -e azure
+

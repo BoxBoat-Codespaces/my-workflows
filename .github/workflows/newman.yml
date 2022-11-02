@@ -2,12 +2,6 @@ name: Newman Collection Runner
 on:
   workflow_call:
     inputs:
-      collection:
-        required: true
-        type: string
-      environment: 
-        required: true
-        type: string
       url:
         required: true
         type: string

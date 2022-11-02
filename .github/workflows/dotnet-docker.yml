@@ -14,7 +14,7 @@ env:
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:

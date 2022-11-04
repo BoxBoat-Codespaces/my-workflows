@@ -30,11 +30,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Secret replacement
+    - name: Var replacement
       run: |
         sed -i "s/REGUSER/${{ github.actor }}/" container_app.tf
         sed -i "s/REGPASS/${{ secrets.MY_PAT }}/" container_app.tf
         sed -i "s/IMAGE_TAG/${{ inputs.tag }}/" container_app.tf
+        sed -i "s/GHUSER/${{ github.actor }}/" container_app.tf
 
     - name: Terraform Plan
       run: |
@@ -60,11 +61,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Secret replacement
+    - name: Var replacement
       run: |
         sed -i "s/REGUSER/${{ github.actor }}/" container_app.tf
         sed -i "s/REGPASS/${{ secrets.MY_PAT }}/" container_app.tf
         sed -i "s/IMAGE_TAG/${{ inputs.tag }}/" container_app.tf
+        sed -i "s/GHUSER/${{ github.actor }}/" container_app.tf
 
     - name: Terraform Apply
       id: apply
